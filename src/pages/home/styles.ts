@@ -4,7 +4,6 @@ import { HTMLAttributes } from "react";
 export const Container = styled.div<HTMLAttributes<HTMLDivElement>>`
   width: 100%;
   min-height: 100vh;
-  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
@@ -38,6 +37,7 @@ export const Header = styled.header<HTMLAttributes<HTMLElement>>`
 
 export const Content = styled.main<HTMLAttributes<HTMLDivElement>>`
   width: 100%;
+  height: 100vh;
   padding: 2rem 15rem;
   overflow-y: auto;
 `;

@@ -8,12 +8,12 @@ import { CountryType } from "../../interfaces";
 import TextField from "@mui/material/TextField";
 import { FC, SyntheticEvent, HTMLAttributes } from "react";
 
-interface CountrySelectProps extends HTMLAttributes<HTMLDivElement> {
+interface CountrySelectorProps extends HTMLAttributes<HTMLDivElement> {
   value: CountryType,
   onChangeValue: (event: SyntheticEvent<Element, Event>, value: CountryType) => void
 };
 
-const CountrySelect: FC<CountrySelectProps> = ({ value, onChangeValue, ...props }) => {
+const CountrySelector: FC<CountrySelectorProps> = ({ value, onChangeValue, ...props }) => {
   return (
     <Container data-testid="container" {...props}>
       <Flag>
@@ -30,12 +30,14 @@ const CountrySelect: FC<CountrySelectProps> = ({ value, onChangeValue, ...props 
         }
       </Flag>
       <Autocomplete
-        id="country-select-demo"
+        id="country-select"
         sx={{ width: 300 }}
         options={countries}
+        disableClearable
         autoHighlight
         onChange={onChangeValue}
         getOptionLabel={(option) => option.name}
+        noOptionsText="Nenhum país encontrado"
         renderOption={(props, option) => (
           <Box component="li" sx={{ "& > img": { mr: 2, flexShrink: 0 } }} {...props}>
             {option.flag && <Image
@@ -53,6 +55,7 @@ const CountrySelect: FC<CountrySelectProps> = ({ value, onChangeValue, ...props 
             {...params}
             inputProps={{
               ...params.inputProps,
+              placeholder: "Selecione um país",
               autoComplete: "new-password", // disable autocomplete and autofill
             }}
           />
@@ -62,4 +65,4 @@ const CountrySelect: FC<CountrySelectProps> = ({ value, onChangeValue, ...props 
   );
 };
 
-export default CountrySelect;
+export default CountrySelector;

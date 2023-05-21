@@ -6,7 +6,7 @@ import { FiKey } from "react-icons/fi";
 import { CountryType } from "@/interfaces";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@/components/Autocomplete";
-import CountrySelect from "@/components/SelecCountry";
+import CountrySelector from "@/components/CountrySelector";
 
 const Login: NextPage = (): JSX.Element => {
   const  [country, setCountry] = useState<CountryType>({
@@ -31,7 +31,7 @@ const Login: NextPage = (): JSX.Element => {
         )}
       />
       <br />
-      <CountrySelect value={country} onChangeValue={(e, v) => setCountry(v)}/>
+      <CountrySelector value={country} onChangeValue={(e, v) => setCountry(v)}/>
     </>
   );
 };

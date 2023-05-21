@@ -1,9 +1,24 @@
 import { NextPage } from "next";
+import { useState } from "react";
 import Image from "next/image";
 import soccerImg from "../../../public/assets/soccer.svg";
 import { Container, Header, Content } from "./styles";
+import HStepper from "@/components/HStepper";
+import { DataProps, CountryType } from "@/interfaces";
 
 const Home: NextPage = (): JSX.Element => {
+  const [data, setData] = useState<DataProps>({
+    country: {
+      name: "",
+      code: "",
+      flag: "",
+    },
+    league: "",
+    season: "",
+    club: "",
+    api: "",
+  });
+
   return (
     <Container>
       <Header>
@@ -18,7 +33,7 @@ const Home: NextPage = (): JSX.Element => {
         </div>
       </Header>
       <Content>
-        <h1>Content</h1>
+        <HStepper data={data} setData={setData}/>
       </Content>
     </Container>
   );
