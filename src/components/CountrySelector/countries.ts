@@ -2,6 +2,11 @@ import { CountryType } from "../../interfaces";
 
 const countries: CountryType[] = [
   {
+    "code": "",
+    "flag": "",
+    "name": "Selecione um país"
+  },
+  {
     "code": "AL",
     "flag": "https://media.api-sports.io/flags/al.svg",
     "name": "Albania"

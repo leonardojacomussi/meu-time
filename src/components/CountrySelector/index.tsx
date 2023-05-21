@@ -33,8 +33,11 @@ const CountrySelector: FC<CountrySelectorProps> = ({ value, onChangeValue, ...pr
         id="country-select"
         sx={{ width: 300 }}
         options={countries}
+        getOptionDisabled={(option) => option.name === "Selecione um país"}
         disableClearable
         autoHighlight
+        value={value}
+        isOptionEqualToValue={(option: CountryType, value: CountryType) => option.name === value.name}
         onChange={onChangeValue}
         getOptionLabel={(option) => option.name}
         noOptionsText="Nenhum país encontrado"

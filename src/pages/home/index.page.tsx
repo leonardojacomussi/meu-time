@@ -4,16 +4,21 @@ import Image from "next/image";
 import soccerImg from "../../../public/assets/soccer.svg";
 import { Container, Header, Content } from "./styles";
 import HStepper from "@/components/HStepper";
-import { DataProps, CountryType } from "@/interfaces";
+import { DataProps } from "@/interfaces";
 
 const Home: NextPage = (): JSX.Element => {
   const [data, setData] = useState<DataProps>({
     country: {
-      name: "",
+      name: "Selecione um país",
       code: "",
       flag: "",
     },
-    league: "",
+    league: {
+      id: 0,
+      type: "",
+      name: "",
+      logo: "",
+    },
     season: "",
     club: "",
     api: "",

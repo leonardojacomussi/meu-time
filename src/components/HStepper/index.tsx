@@ -2,8 +2,10 @@ import Step from "../Step";
 import Button from "../Button";
 import Stepper from "../Stepper";
 import CountrySelector from "../CountrySelector";
-import countries from "../CountrySelector/countries";
-import { DataProps, CountryType } from "@/interfaces";
+import countries from "../CountrySelector/countries"; /**REMOVER */
+import LeagueSelector from "../LeagueSelector";
+import leagues from "../LeagueSelector/leagues"; /**REMOVER */
+import { DataProps, CountryType, LeagueType } from "@/interfaces";
 import { Container, SelectorContainer, Content, Buttons } from "./styles";
 import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useEffect, useState } from "react";
 
@@ -25,6 +27,7 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
 
   const isDisabled = (): boolean => {
     if (activeStep === 0) return data.country.flag === "" || data.country.flag === undefined;
+    if (activeStep === 1) return data.league.logo === "" || data.league.logo === undefined;
     return false;
   };
 
@@ -34,6 +37,14 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
     const findCountry = countries.find((country) => country.name === value.name);
     if (findCountry === undefined) return;
     setData({ ...data, country: value });
+  };
+
+  const handleLeagueChange = (event: SyntheticEvent<Element, Event>, value: LeagueType): void => {
+    event.preventDefault();
+    if (value === null) return;
+    const findLeague = leagues.find(({ league }) => league.id === value.id);
+    if (findLeague === undefined) return;
+    setData({ ...data, league: value });
   };
 
   useEffect(() => {
@@ -75,6 +86,18 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
                 id="CountrySelector"
                 value={data.country}
                 onChangeValue={handleCountryChange}
+              />
+            </SelectorContainer>
+          }
+          {
+            activeStep === 1 &&
+            <SelectorContainer>
+              <label htmlFor="LegueSelector">Selecione uma liga: </label>
+              <LeagueSelector
+                id="LegueSelector"
+                value={data.league}
+                onChangeValue={handleLeagueChange}
+                leagues={leagues}
               />
             </SelectorContainer>
           }

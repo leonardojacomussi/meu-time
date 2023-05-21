@@ -45,7 +45,7 @@ export interface LeagueResponse {
 
 export interface DataProps {
   country: CountryType;
-  league: string;
+  league: LeagueType;
   season: string;
   club: string;
   api: string;
