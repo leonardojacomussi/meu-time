@@ -13,6 +13,7 @@ const muiTheme: Theme = createTheme({
       roboto.style.fontFamily,
       "sans-serif",
     ].join(","),
+    htmlFontSize: 10,
   }
 });
 

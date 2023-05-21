@@ -13,7 +13,7 @@ export const Container = styled.div<HTMLAttributes<HTMLDivElement>>`
   margin-bottom: .8rem;
   border-radius: ${({ theme }) => theme.border.radius};
 
-  &.onFocus {
+  &:focus-within {
     outline: 1px solid ${({ theme }) => theme.colors.green[500]};
   };
 

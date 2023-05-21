@@ -7,6 +7,7 @@ const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
     formats: ["image/avif", "image/webp"],
+    domains: ["media.api-sports.io"]
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
 }

@@ -1,4 +1,4 @@
-import { screen, render, fireEvent } from "../../../utils/tests";
+import { screen, render, fireEvent } from "../../utils/tests";
 import "jest-styled-components";
 import Button from ".";
 
