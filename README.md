@@ -38,7 +38,7 @@ This project was developed with the following technologies:
 
 <h2 id="layout">🔖 Layout</h2>
 
-You can view the project layout through [THIS LINK](https://www.figma.com/file/bhRb4iFUkfRFlDm9Yd5uk5/RocketMovies-(Copy)). You must have a [Figma](https://figma.com) account to access it.
+You can view the project layout through the files `UI-Design.fig` and `UI-Design.pdf` in [THIS FOLDER](./.github/). You must have a [Figma](https://figma.com) account to access it.
 
 <h2 id="gettingStarted">👨🏽‍💻 Getting Started</h2>
 
