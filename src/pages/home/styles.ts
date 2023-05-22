@@ -37,7 +37,7 @@ export const Header = styled.header<HTMLAttributes<HTMLElement>>`
 
 export const Content = styled.main<HTMLAttributes<HTMLDivElement>>`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding: 2rem 15rem;
   overflow-y: auto;
 `;
