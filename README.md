@@ -23,7 +23,7 @@
 
 <h2 id="live">👁️‍🗨️ Live</h2>
 
-This project is hosted at Github Pages of this repository by the link <a href="https://leonardojacomussi.github.io/rocketmovies/" target="_blank">https://leonardojacomussi.github.io/rocketmovies/</a>
+This project is hosted at Vercel by the link <a href="https://meu-time-leonardojacomussi.vercel.app/" target="_blank">https://meu-time-leonardojacomussi.vercel.app/</a>
 
 <h2 id="technologies">🚀 Technologies</h2>
 
@@ -45,7 +45,7 @@ You can view the project layout through the files `UI-Design.fig` and `UI-Design
 First, install the dependencies:
 
 ```bash
-npm install
+npm install --force
 ```
 
 Second, run the development server:
