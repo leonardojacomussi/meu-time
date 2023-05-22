@@ -1,51 +1,14 @@
-import { NextPage } from "next";
+import { NextPage, GetServerSidePropsContext } from "next";
 import { useState } from "react";
 import Image from "next/image";
 import soccerImg from "../../../public/assets/soccer.svg";
 import { Container, Header, Content } from "./styles";
 import HStepper from "@/components/HStepper";
-import { DataProps } from "@/interfaces";
+import { DataType } from "@/interfaces";
+import defaultData from "@/mock/data";
 
-const Home: NextPage = (): JSX.Element => {
-  const [data, setData] = useState<DataProps>({
-    country: {
-      name: "Selecione um país",
-      code: "",
-      flag: "",
-    },
-    league: {
-      id: 0,
-      type: "",
-      name: "",
-      logo: "",
-    },
-    season: {
-      year: "Selecione uma temporada",
-      start: "",
-      end: "",
-    },
-    team: {
-      "team": {
-        "id": 0,
-        "name": "Selecione um clube",
-        "code": "",
-        "country": "",
-        "founded": 0,
-        "national": false,
-        "logo": ""
-      },
-      "venue": {
-        "id": 0,
-        "name": "",
-        "address": "",
-        "city": "",
-        "capacity": 0,
-        "surface": "",
-        "image": ""
-      }
-    },
-    api: "",
-  });
+const Home: NextPage<{ apiKey: string }> = ({ apiKey }): JSX.Element => {
+  const [data, setData] = useState<DataType>({...defaultData});
 
   return (
     <Container>
@@ -61,10 +24,31 @@ const Home: NextPage = (): JSX.Element => {
         </div>
       </Header>
       <Content>
-        <HStepper data={data} setData={setData}/>
+        <HStepper data={data} setData={setData} apiKey={apiKey}/>
       </Content>
     </Container>
   );
 };
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext): Promise<{ props: { apiKey: string } }> => {
+  const apiKey = ctx.req.cookies["meu-time-api-key"];
+  if (!apiKey || typeof apiKey !== "string") {
+    const { res } = ctx;
+    res.setHeader("location", "/?error=invalid_api_key");
+    res.statusCode = 302;
+    res.end();
+    return {
+      props: {
+        apiKey: "INVALID",
+      },
+    };
+  };
+  return {
+    props: {
+      apiKey: apiKey,
+    },
+  };
+};
+
 
 export default Home;

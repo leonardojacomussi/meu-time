@@ -51,7 +51,7 @@ const PieChart: FC<PieChartProps> = ({ title, labels, datasets, ...props }): JSX
                   label: (context: any) => {
                     const label: string = context.label || "";
                     const value: number = context.raw || 0;
-                    return `${value}%`;
+                    return `${value.toFixed(1).replace(".", ",")}%`;
                   }
                 }
               }

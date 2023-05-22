@@ -1,36 +1,140 @@
 import Step from "../Step";
+import api from "@/lib/api";
 import Button from "../Button";
 import Stepper from "../Stepper";
-import CountrySelector from "../CountrySelector";
-import countries from "@/mock/countries"; /**REMOVER */
-import LeagueSelector from "../LeagueSelector";
-import leagues from "@/mock/leagues"; /**REMOVER */
-import SeasonSelector from "../SeasonSelector";
+import defaultData from "@/mock/data";
+import { useSnackbar } from "notistack";
+import countries from "@/mock/countries";
 import TeamSelector from "../TeamSelector";
-import teams from "@/mock/teams"; /**REMOVER */
+import LoadingContent from "../LoadingContent";
+import LeagueSelector from "../LeagueSelector";
+import SeasonSelector from "../SeasonSelector";
 import TeamStatistics from "../TeamStatistics";
-import statistics from "@/mock/statistics"; /**REMOVER */
-import players from "@/mock/players"; /**EXCLUIR */
+import CountrySelector from "../CountrySelector";
 import { Container, SelectorContainer, Content, Buttons } from "./styles";
-import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useState } from "react";
-import { DataProps, CountryType, LeagueType, SeasonType, TeamType, LeagueResponse } from "@/interfaces";
+import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useEffect, useState } from "react";
+import { DataType, CountryType, LeagueType, SeasonType, TeamType, LeagueResponse, StatisticsType, PlayerType } from "@/interfaces";
 
 const steps = ["País", "Liga", "Temporada", "Clube", "Informações"];
 
 interface HStepperProps extends HTMLAttributes<HTMLDivElement> {
-  data: DataProps;
-  setData: (value: SetStateAction<DataProps>) => void;
+  data: DataType;
+  apiKey: string;
+  setData: (value: SetStateAction<DataType>) => void;
 };
 
-const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
+const HStepper: FC<HStepperProps> = ({ data, setData, apiKey, ...props }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState<boolean>(false);
   const [activeStep, setActiveStep] = useState<number>(0);
+  const [leagues, setLeagues] = useState<Array<LeagueResponse>>([]);
+  const [teams, setTeams] = useState<Array<TeamType>>([]);
+  const [players, setPlayers] = useState<Array<PlayerType>>([]);
+  const [statistics, setStatistics] = useState<StatisticsType | null>(null);
   const [leaguesResponse, setLeagueResponse] = useState<LeagueResponse | null>(null);
 
   const handleReset = (): void => setActiveStep(0);
 
-  const handleNext = (): void => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const handleBack = (): void => {
+    if (activeStep === 0) {
+      return;
+    } else if (activeStep === 1) {
+      setData({ ...data, league: { ...defaultData.league } });
+    } else if (activeStep === 2) {
+      setData({ ...data, season: { ...defaultData.season } });
+    } else if (activeStep === 3) {
+      setData({ ...data, team: { ...defaultData.team } });
+    };
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
-  const handleBack = (): void => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const handleNext = async (): Promise<void> => {
+    if (activeStep === steps.length - 1) return;
+    setLoading(true);
+    if (activeStep === 0) {
+      const success = await fetchLeague();
+      if (!success) return;
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else if (activeStep === 1) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else if (activeStep === 2) {
+      const success = await fetchTeam();
+      if (!success) return;
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else if (activeStep === 3) {
+      const success = await fetchTeamStatistics();
+      if (!success) return;
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+    setLoading(false);
+  };
+
+  const fetchLeague = async (): Promise<boolean> => {
+    try {
+      const response = await api.get("leagues", {
+        headers: {
+          "x-rapidapi-key": apiKey,
+        },
+        params: {
+          code: data.country.code.toLowerCase(),
+        },
+      });
+      setLeagues(response.data.response);
+      return true;
+    } catch (error) {
+      enqueueSnackbar("Erro ao buscar liga", { variant: "error" });
+      return false;
+    };
+  };
+
+  const fetchTeam = async (): Promise<boolean> => {
+    try {
+      const response = await api.get("teams", {
+        headers: {
+          "X-RapidAPI-Key": apiKey,
+        },
+        params: {
+          league: data.league.id,
+          season: data.season.year,
+        },
+      });
+      setTeams(response.data.response);
+      return true;
+    } catch (error) {
+      enqueueSnackbar("Erro ao buscar clube", { variant: "error" });
+      return false;
+    };
+  };
+
+  const fetchTeamStatistics = async (): Promise<boolean> => {
+    try {
+      const responseStatistics = await api.get("teams/statistics", {
+        headers: {
+          "X-RapidAPI-Key": apiKey,
+        },
+        params: {
+          league: data.league.id,
+          season: data.season.year,
+          team: data.team.team.id,
+        },
+      });
+      const responsePlayers = await api.get("players", {
+        headers: {
+          "X-RapidAPI-Key": apiKey,
+        },
+        params: {
+          team: data.team.team.id,
+          season: data.season.year,
+        },
+      });
+      setStatistics(responseStatistics.data.response);
+      setPlayers(responsePlayers.data.response);
+      return true;
+    } catch (error) {
+      enqueueSnackbar("Erro ao buscar estatísticas", { variant: "error" });
+      return false;
+    };
+  };
 
   const isDisabled = (): boolean => {
     if (activeStep === 0) return data.country.flag === "" || data.country.flag === undefined;
@@ -88,7 +192,7 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
           );
         })}
       </Stepper>
-      {activeStep === steps.length - 1 ? (
+      {statistics && activeStep === steps.length - 1 ? (
         <Fragment>
           <Content>
             <TeamStatistics
@@ -97,7 +201,13 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
             />
           </Content>
           <Buttons>
-            <div style={{ flex: "1 1 auto" }} />
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+            >
+              Anterior
+            </Button>
             <Button onClick={handleReset}>Reiniciar</Button>
           </Buttons>
         </Fragment>
@@ -164,6 +274,7 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
           </Buttons>
         </Fragment>
       )}
+      <LoadingContent open={loading} />
     </Container>
   );
 }

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Head from "next/head";
 import theme from "@/styles/theme";
 import muiTheme from "@/styles/muiTheme";
@@ -7,6 +7,9 @@ import GlobalStyle from "@/styles/Global";
 import { SnackbarProvider } from "notistack";
 import { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
+import { GiSoccerBall } from "react-icons/gi";
+import { useRouter, NextRouter } from "next/router";
+import LoadingContent from "@/components/LoadingContent";
 import createEmotionCache from "../utils/createEmotionCache";
 import { ThemeProvider as SCThemeProvider } from "styled-components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
@@ -21,6 +24,28 @@ interface MyAppProps extends AppProps {
 const App: FC<MyAppProps> = ({
   Component, pageProps, emotionCache = clientSideEmotionCache
  }): JSX.Element => {
+  const router: NextRouter = useRouter();
+	const [openLoadingContent, setOpenLoadingContent] = useState<boolean>(false);
+
+  useEffect(() => {
+		const handleStart = () => {
+			setOpenLoadingContent(true);
+		};
+		const handleStop = () => {
+			setOpenLoadingContent(false);
+		};
+
+		router.events.on("routeChangeStart", handleStart);
+		router.events.on("routeChangeComplete", handleStop);
+		router.events.on("routeChangeError", handleStop);
+
+		return () => {
+			router.events.off("routeChangeStart", handleStart);
+			router.events.off("routeChangeComplete", handleStop);
+			router.events.off("routeChangeError", handleStop);
+		};
+	}, [router]);
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -43,6 +68,7 @@ const App: FC<MyAppProps> = ({
           <SnackbarProvider maxSnack={5} style={{ fontSize: "1.6rem" }}>
             <GlobalStyle />
             <Component {...pageProps} />
+            <LoadingContent open={openLoadingContent} />
           </SnackbarProvider>
         </SCThemeProvider>
       </MuiThemeProvider>

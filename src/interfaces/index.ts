@@ -64,12 +64,11 @@ export interface TeamType {
   };
 };
 
-export interface DataProps {
+export interface DataType {
   country: CountryType;
   league: LeagueType;
   season: SeasonType;
   team: TeamType;
-  api: string;
 };
 
 export interface StatisticsType {

@@ -1,19 +1,49 @@
+import api from "@/lib/api";
 import Link from "next/link";
 import { NextPage } from "next";
-import { FormEvent } from "react";
+import Cookies from "js-cookie";
 import { FiKey } from "react-icons/fi";
+import { useSnackbar } from "notistack";
 import Input from "../../components/Input";
+import { FormEvent, useEffect, useState } from "react";
+import { ParsedUrlQuery } from "querystring";
 import Button from "../../components/Button";
 import { useRouter, NextRouter } from "next/router";
 import { Container, Form, Background } from "./styles";
 
 const SignIn: NextPage = (): JSX.Element => {
   const router: NextRouter = useRouter();
+  const query: ParsedUrlQuery = router.query;
+  const { enqueueSnackbar } = useSnackbar();
+  const [apiKey, setApiKey] = useState<string>("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    router.push("/home");
+    if (!apiKey) {
+      enqueueSnackbar("Informe a API key", { variant: "error" });
+      return;
+    };
+    api.defaults.headers["X-RapidAPI-Key"] = apiKey;
+    api.get("countries").then((response) => {
+      if(response.status >= 200 && response.status < 300) {
+        Cookies.set("meu-time-api-key", apiKey);
+        router.push("/home");
+      };
+      console.log(response);
+    }).catch((error) => {
+      enqueueSnackbar("API key inválida", { variant: "error" });
+    });
   };
+
+  const handleInputChange = (e: FormEvent<HTMLInputElement>): void => {
+    setApiKey(e.currentTarget.value);
+  };
+
+  useEffect(() => {
+    if (query.error) {
+      enqueueSnackbar("API key inválida", { variant: "error" });
+    };
+  }, [query])
 
   return (
     <Container>
@@ -29,6 +59,8 @@ const SignIn: NextPage = (): JSX.Element => {
               id="apiKey"
               placeholder="API key"
               icon={FiKey}
+              value={apiKey}
+              onChange={handleInputChange}
             />
           </div>
           <Button aria-label="Acessar aplicativa Meu Time">
