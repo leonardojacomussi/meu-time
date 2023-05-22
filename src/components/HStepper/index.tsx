@@ -7,10 +7,13 @@ import LeagueSelector from "../LeagueSelector";
 import leagues from "@/mock/leagues"; /**REMOVER */
 import SeasonSelector from "../SeasonSelector";
 import TeamSelector from "../TeamSelector";
-import teams from "@/mock/teams";
-import { DataProps, CountryType, LeagueType, SeasonType, TeamType, LeagueResponse } from "@/interfaces";
+import teams from "@/mock/teams"; /**REMOVER */
+import TeamStatistics from "../TeamStatistics";
+import statistics from "@/mock/statistics"; /**REMOVER */
+import players from "@/mock/players"; /**EXCLUIR */
 import { Container, SelectorContainer, Content, Buttons } from "./styles";
-import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useEffect, useState } from "react";
+import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useState } from "react";
+import { DataProps, CountryType, LeagueType, SeasonType, TeamType, LeagueResponse } from "@/interfaces";
 
 const steps = ["País", "Liga", "Temporada", "Clube", "Informações"];
 
@@ -32,7 +35,7 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
   const isDisabled = (): boolean => {
     if (activeStep === 0) return data.country.flag === "" || data.country.flag === undefined;
     if (activeStep === 1) return data.league.logo === "" || data.league.logo === undefined;
-    if (activeStep === 2) return typeof(data.season.year) !== "number" || data.league.logo === undefined;
+    if (activeStep === 2) return typeof (data.season.year) !== "number" || data.league.logo === undefined;
     if (activeStep === 4) return data.team.team.name !== "Selecione um clube" || !data.team.team.name;
     return false;
   };
@@ -88,7 +91,10 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
       {activeStep === steps.length - 1 ? (
         <Fragment>
           <Content>
-            <p>All steps completed - you&apos;re finished</p>
+            <TeamStatistics
+              players={players}
+              statistics={statistics}
+            />
           </Content>
           <Buttons>
             <div style={{ flex: "1 1 auto" }} />
