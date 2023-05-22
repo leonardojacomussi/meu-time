@@ -65,7 +65,7 @@ const SignIn: NextPage = (): JSX.Element => {
           <Button aria-label="Acessar aplicativa Meu Time">
             Entrar
           </Button>
-          <Link href="/register">Ainda não tem uma API key?</Link>
+          <Link href="https://www.api-football.com/" rel="external" target="_blank">Ainda não tem uma API key?</Link>
         </div>
       </Form>
     </Container>
