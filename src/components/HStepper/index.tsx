@@ -2,11 +2,13 @@ import Step from "../Step";
 import Button from "../Button";
 import Stepper from "../Stepper";
 import CountrySelector from "../CountrySelector";
-import countries from "../../mock/countries"; /**REMOVER */
+import countries from "@/mock/countries"; /**REMOVER */
 import LeagueSelector from "../LeagueSelector";
-import leagues from "../../mock/leagues"; /**REMOVER */
+import leagues from "@/mock/leagues"; /**REMOVER */
 import SeasonSelector from "../SeasonSelector";
-import { DataProps, CountryType, LeagueType, SeasonType, LeagueResponse } from "@/interfaces";
+import TeamSelector from "../TeamSelector";
+import teams from "@/mock/teams";
+import { DataProps, CountryType, LeagueType, SeasonType, TeamType, LeagueResponse } from "@/interfaces";
 import { Container, SelectorContainer, Content, Buttons } from "./styles";
 import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useEffect, useState } from "react";
 
@@ -30,6 +32,8 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
   const isDisabled = (): boolean => {
     if (activeStep === 0) return data.country.flag === "" || data.country.flag === undefined;
     if (activeStep === 1) return data.league.logo === "" || data.league.logo === undefined;
+    if (activeStep === 2) return typeof(data.season.year) !== "number" || data.league.logo === undefined;
+    if (activeStep === 4) return data.team.team.name !== "Selecione um clube" || !data.team.team.name;
     return false;
   };
 
@@ -58,9 +62,13 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
     setData({ ...data, season: value });
   };
 
-  useEffect(() => {
-    console.log(data.country);
-  }, [data.country]);
+  const handleTeamChange = (event: SyntheticEvent<Element, Event>, value: TeamType): void => {
+    event.preventDefault();
+    if (value === null) return;
+    const findTeam = teams.find(({ team }) => team.id === value.team.id);
+    if (findTeam === undefined) return;
+    setData({ ...data, team: value });
+  };
 
   return (
     <Container {...props}>
@@ -121,6 +129,18 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
                 value={data.season}
                 onChangeValue={handleSeasonChange}
                 league={leaguesResponse}
+              />
+            </SelectorContainer>
+          }
+          {
+            activeStep === 3 &&
+            <SelectorContainer>
+              <label htmlFor="TeamSelector">Selecione um clube: </label>
+              <TeamSelector
+                id="TeamSelector"
+                value={data.team}
+                onChangeValue={handleTeamChange}
+                teams={teams}
               />
             </SelectorContainer>
           }

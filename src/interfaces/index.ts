@@ -5,7 +5,7 @@ export interface CountryType {
 };
 
 export interface LeagueType {
-  id: number,
+  id: number;
   name: string;
   type: string;
   logo: string;
@@ -43,10 +43,31 @@ export interface LeagueResponse {
   seasons: Array<SeasonType>;
 };
 
+export interface TeamType {
+  team: {
+    id: number;
+    name: string;
+    code: string;
+    country: string;
+    founded: number;
+    national: boolean;
+    logo: string
+  };
+  venue: {
+    id: number;
+    name: string;
+    address: string;
+    city: string;
+    capacity: number;
+    surface: string;
+    image: string
+  };
+};
+
 export interface DataProps {
   country: CountryType;
   league: LeagueType;
   season: SeasonType;
-  club: string;
+  team: TeamType;
   api: string;
 };

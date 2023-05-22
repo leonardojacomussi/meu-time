@@ -24,7 +24,26 @@ const Home: NextPage = (): JSX.Element => {
       start: "",
       end: "",
     },
-    club: "",
+    team: {
+      "team": {
+        "id": 0,
+        "name": "Selecione um clube",
+        "code": "",
+        "country": "",
+        "founded": 0,
+        "national": false,
+        "logo": ""
+      },
+      "venue": {
+        "id": 0,
+        "name": "",
+        "address": "",
+        "city": "",
+        "capacity": 0,
+        "surface": "",
+        "image": ""
+      }
+    },
     api: "",
   });
 
