@@ -33,7 +33,10 @@ const HStepper: FC<HStepperProps> = ({ data, setData, apiKey, ...props }) => {
   const [statistics, setStatistics] = useState<StatisticsType | null>(null);
   const [leaguesResponse, setLeagueResponse] = useState<LeagueResponse | null>(null);
 
-  const handleReset = (): void => setActiveStep(0);
+  const handleReset = (): void => {
+    setData({ ...defaultData });
+    setActiveStep(0);
+  };
 
   const handleBack = (): void => {
     if (activeStep === 0) {
