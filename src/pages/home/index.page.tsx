@@ -19,7 +19,11 @@ const Home: NextPage = (): JSX.Element => {
       name: "",
       logo: "",
     },
-    season: "",
+    season: {
+      year: "Selecione uma temporada",
+      start: "",
+      end: "",
+    },
     club: "",
     api: "",
   });

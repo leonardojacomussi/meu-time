@@ -1,4 +1,4 @@
-import { CountryType } from "../../interfaces";
+import { CountryType } from "../interfaces";
 
 const countries: CountryType[] = [
   {

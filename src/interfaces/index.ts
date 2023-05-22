@@ -13,11 +13,11 @@ export interface LeagueType {
 };
 
 export interface SeasonType {
-  year: number;
+  year: number | string;
   start: string;
   end: string;
-  current: boolean;
-  coverage: {
+  current?: boolean;
+  coverage?: {
     fixtures: {
       events: boolean;
       lineups: boolean;
@@ -46,7 +46,7 @@ export interface LeagueResponse {
 export interface DataProps {
   country: CountryType;
   league: LeagueType;
-  season: string;
+  season: SeasonType;
   club: string;
   api: string;
 };

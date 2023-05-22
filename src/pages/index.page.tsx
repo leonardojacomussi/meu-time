@@ -12,7 +12,7 @@ const Login: NextPage = (): JSX.Element => {
   const  [country, setCountry] = useState<CountryType>({
     "code": "",
     "flag": "",
-    "name": "World"
+    "name": "Selecione um país"
   });
 
   return (

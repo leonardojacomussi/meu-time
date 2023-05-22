@@ -2,10 +2,11 @@ import Step from "../Step";
 import Button from "../Button";
 import Stepper from "../Stepper";
 import CountrySelector from "../CountrySelector";
-import countries from "../CountrySelector/countries"; /**REMOVER */
+import countries from "../../mock/countries"; /**REMOVER */
 import LeagueSelector from "../LeagueSelector";
-import leagues from "../LeagueSelector/leagues"; /**REMOVER */
-import { DataProps, CountryType, LeagueType } from "@/interfaces";
+import leagues from "../../mock/leagues"; /**REMOVER */
+import SeasonSelector from "../SeasonSelector";
+import { DataProps, CountryType, LeagueType, SeasonType, LeagueResponse } from "@/interfaces";
 import { Container, SelectorContainer, Content, Buttons } from "./styles";
 import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useEffect, useState } from "react";
 
@@ -17,7 +18,8 @@ interface HStepperProps extends HTMLAttributes<HTMLDivElement> {
 };
 
 const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const [leaguesResponse, setLeagueResponse] = useState<LeagueResponse | null>(null);
 
   const handleReset = (): void => setActiveStep(0);
 
@@ -44,7 +46,16 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
     if (value === null) return;
     const findLeague = leagues.find(({ league }) => league.id === value.id);
     if (findLeague === undefined) return;
+    setLeagueResponse(findLeague);
     setData({ ...data, league: value });
+  };
+
+  const handleSeasonChange = (event: SyntheticEvent<Element, Event>, value: SeasonType): void => {
+    event.preventDefault();
+    if (value === null) return;
+    const findSeason = leaguesResponse?.seasons.find((season: SeasonType) => season.year === value.year);
+    if (findSeason === undefined) return;
+    setData({ ...data, season: value });
   };
 
   useEffect(() => {
@@ -98,6 +109,18 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
                 value={data.league}
                 onChangeValue={handleLeagueChange}
                 leagues={leagues}
+              />
+            </SelectorContainer>
+          }
+          {
+            leaguesResponse && activeStep === 2 &&
+            <SelectorContainer>
+              <label htmlFor="SeasonSelector">Selecione uma temporada: </label>
+              <SeasonSelector
+                id="SeasonSelector"
+                value={data.season}
+                onChangeValue={handleSeasonChange}
+                league={leaguesResponse}
               />
             </SelectorContainer>
           }

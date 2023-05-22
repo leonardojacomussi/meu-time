@@ -1,18 +1,18 @@
 import { screen, render, fireEvent, within, waitFor } from "../../utils/tests";
 import "jest-styled-components";
-import LeagueSelector from ".";
+import SeasonSelector from ".";
 import leagues from "../../mock/leagues";
-import { LeagueType } from "@/interfaces";
+import { SeasonType } from "@/interfaces";
 
-describe("LeagueSelector", () => {
+describe("SeasonSelector", () => {
   test("Renders correctly", () => {
     const onChange = jest.fn();
-    const league: LeagueType = leagues[1].league;
+    const season: SeasonType = leagues[1].seasons[0];
 
     render(
-      <LeagueSelector
-        value={league}
-        leagues={leagues}
+      <SeasonSelector
+        value={season}
+        league={leagues[1]}
         onChangeValue={onChange}
       />
     );
@@ -22,20 +22,20 @@ describe("LeagueSelector", () => {
 
   test("onChange", async () => {
     const onChange = jest.fn();
-    const league: LeagueType = leagues[1].league;
+    const season: SeasonType = leagues[1].seasons[0];
 
     render(
-      <LeagueSelector
-        value={league}
-        leagues={leagues}
+      <SeasonSelector
+        value={season}
+        league={leagues[1]}
         onChangeValue={onChange}
       />
     );
     const autocomplete = screen.getByTestId("autocomplete");
     const input = within(autocomplete).getByRole("combobox");
     autocomplete.focus();
-    fireEvent.change(input, { target: { value: "premier" } });
-    expect(screen.getByText("Premier League")).toBeInTheDocument();
+    fireEvent.change(input, { target: { value: "201" } });
+    expect(screen.getByText("2011")).toBeInTheDocument();
     fireEvent.keyDown(autocomplete, { key: "ArrowDown" })
     fireEvent.keyDown(autocomplete, { key: "Enter" })
     expect(onChange).toHaveBeenCalledTimes(1);

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import countries from "./countries";
+import countries from "../../mock/countries";
 import Box from "@mui/material/Box";
 import { FiGlobe } from "react-icons/fi";
 import { Container, Flag } from "./styles";

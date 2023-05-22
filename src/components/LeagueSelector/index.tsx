@@ -1,5 +1,5 @@
 import Image from "next/image";
-import leagues from "./leagues";
+import leagues from "../../mock/leagues"; /**EXCLUIR */
 import { useMemo } from "react";
 import Box from "@mui/material/Box";
 import { FiGlobe } from "react-icons/fi";
