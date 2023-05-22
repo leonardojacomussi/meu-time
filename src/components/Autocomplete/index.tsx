@@ -15,7 +15,6 @@ const Autocomplete: FC<AutocompleteProps> = ({ options, ...props }): JSX.Element
 
 	const renderOption = (propsLI: HTMLAttributes<HTMLLIElement>, option: any, state: AutocompleteRenderOptionState): ReactNode => {
 		if (props.renderOption) {
-			console.log(props.renderOption(propsLI, option, state));
 			return props.renderOption(propsLI, option, state);
 		} else {
 			return (

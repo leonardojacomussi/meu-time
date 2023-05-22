@@ -29,7 +29,6 @@ const SignIn: NextPage = (): JSX.Element => {
         Cookies.set("meu-time-api-key", apiKey);
         router.push("/home");
       };
-      console.log(response);
     }).catch((error) => {
       enqueueSnackbar("API key inválida", { variant: "error" });
     });
