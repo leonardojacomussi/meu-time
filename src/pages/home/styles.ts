@@ -33,6 +33,24 @@ export const Header = styled.header<HTMLAttributes<HTMLElement>>`
     justify-content: center;
     align-items: center;
   };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding: 4rem 5rem 2rem;
+  };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 4rem 2rem 2rem;
+
+    > .soccer {
+      width: 10rem;
+      height: auto;
+
+      > img {
+        width: 10rem;
+        height: auto;
+      };
+    };
+  };
 `;
 
 export const Content = styled.main<HTMLAttributes<HTMLDivElement>>`
@@ -40,4 +58,12 @@ export const Content = styled.main<HTMLAttributes<HTMLDivElement>>`
   height: 100%;
   padding: 2rem 15rem;
   overflow-y: auto;
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding: 2rem 5rem;
+  };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 2rem 2rem;
+  };
 `;

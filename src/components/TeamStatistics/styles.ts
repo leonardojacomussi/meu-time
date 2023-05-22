@@ -19,6 +19,10 @@ export const Container = styled.div<HTMLAttributes<HTMLDivElement>>`
   .txtOrange {
     color: ${({ theme }) => theme.colors.orange[500]};
   };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 0;
+  };
 `;
 
 export const About = styled.header<HTMLAttributes<HTMLElement>>`
@@ -76,9 +80,14 @@ export const Results = styled.div<HTMLAttributes<HTMLDivElement>>`
   gap: 2rem;
 `;
 
+export const TableContainer = styled.div<HTMLAttributes<HTMLDivElement>>`
+  overflow-x: auto;
+`;
+
 export const TableOfResults = styled.table<HTMLAttributes<HTMLTableElement>>`
   width: 100%;
   border-collapse: collapse;
+  overflow-x: auto;
 
   td, th {
     text-align: center;
@@ -86,6 +95,12 @@ export const TableOfResults = styled.table<HTMLAttributes<HTMLTableElement>>`
 
     :not(:last-child) {
       border-right: 1px solid ${({ theme }) => theme.colors.gray[300]};
+    };
+  };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.md}) {
+    td, th {
+      padding: 1rem 1rem;
     };
   };
 `;
@@ -112,7 +127,16 @@ export const ChartAtHome = styled.div<HTMLAttributes<HTMLDivElement>>`
   > div {
     width: calc(50% - 1rem);
     height: fit-content;
-  }
+  };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    flex-direction: column;
+
+    > div {
+      width: 100%;
+      height: fit-content;
+    };
+  };
 `;
 
 export const ChartAway = styled.div<HTMLAttributes<HTMLDivElement>>`
@@ -128,7 +152,16 @@ export const ChartAway = styled.div<HTMLAttributes<HTMLDivElement>>`
   > div {
     width: calc(50% - 1rem);
     height: fit-content;
-  }
+  };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    flex-direction: column;
+
+    > div {
+      width: 100%;
+      height: fit-content;
+    };
+  };
 `;
 
 export const Lineups = styled.div<HTMLAttributes<HTMLDivElement>>`
@@ -201,6 +234,28 @@ export const TableOfPlayers = styled.table<HTMLAttributes<HTMLTableElement>>`
     > img {
       border-radius: 50% !important;
       object-fit: cover;
+    };
+  };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.md}) {
+    td, th {
+      padding: 1rem 1rem;
+    };
+  };
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    td, th {
+      :first-child {
+        display: none;
+      };
+
+      :nth-child(2) {
+        padding-left: 0;
+      };
+
+      :last-child {
+        padding-right: 0;
+      };
     };
   };
 `;

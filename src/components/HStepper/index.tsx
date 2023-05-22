@@ -98,7 +98,7 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
           </Content>
           <Buttons>
             <div style={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Reset</Button>
+            <Button onClick={handleReset}>Reiniciar</Button>
           </Buttons>
         </Fragment>
       ) : (
@@ -156,10 +156,10 @@ const HStepper: FC<HStepperProps> = ({ data, setData, ...props }) => {
               disabled={activeStep === 0}
               onClick={handleBack}
             >
-              Back
+              Anterior
             </Button>
             <Button onClick={handleNext} disabled={isDisabled()}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              Próximo
             </Button>
           </Buttons>
         </Fragment>

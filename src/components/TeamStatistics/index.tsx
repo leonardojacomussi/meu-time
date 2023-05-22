@@ -3,11 +3,11 @@ import PieChart from "../PieChart";
 import BarChart from "../BarChart";
 import { FiUserX } from "react-icons/fi";
 import { FC, HTMLAttributes } from "react";
-import { StatisticsType,PlayerType } from "@/interfaces";
+import { StatisticsType, PlayerType } from "@/interfaces";
 import { useTheme, DefaultTheme } from "styled-components";
 import { GiPodiumWinner, GiPodiumSecond, GiPodiumThird } from "react-icons/gi";
 import {
-  Container, About, Title, Subtitle, Results, TableOfResults,
+  Container, About, Title, Subtitle, Results, TableContainer, TableOfResults,
   ChartContainer, ChartAtHome, ChartAway, Lineups, Players, TableOfPlayers
 } from "./styles";
 
@@ -36,24 +36,26 @@ const TeamStatistics: FC<TeamStatisticsProps> = ({ statistics, players, ...props
       <Results>
         <Title>Resultados</Title>
         <Subtitle>Aproveitamento geral</Subtitle>
-        <TableOfResults data-testid="table-results">
-          <thead>
-            <tr>
-              <th>Partidas disputadas</th>
-              <th className="txtGreen">Vitórias</th>
-              <th className="txtYellow">Empates</th>
-              <th className="txtOrange">Derrotas</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{statistics.fixtures.played.total}</td>
-              <td className="txtGreen">{statistics.fixtures.wins.total}</td>
-              <td className="txtYellow">{statistics.fixtures.draws.total}</td>
-              <td className="txtOrange">{statistics.fixtures.loses.total}</td>
-            </tr>
-          </tbody>
-        </TableOfResults>
+        <TableContainer>
+          <TableOfResults data-testid="table-results">
+            <thead>
+              <tr>
+                <th>Partidas disputadas</th>
+                <th className="txtGreen">Vitórias</th>
+                <th className="txtYellow">Empates</th>
+                <th className="txtOrange">Derrotas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{statistics.fixtures.played.total}</td>
+                <td className="txtGreen">{statistics.fixtures.wins.total}</td>
+                <td className="txtYellow">{statistics.fixtures.draws.total}</td>
+                <td className="txtOrange">{statistics.fixtures.loses.total}</td>
+              </tr>
+            </tbody>
+          </TableOfResults>
+        </TableContainer>
 
         <ChartContainer>
           <Subtitle>Jogos em casa</Subtitle>
@@ -152,52 +154,55 @@ const TeamStatistics: FC<TeamStatisticsProps> = ({ statistics, players, ...props
           statistics.lineups
             .slice(0, 3)
             .sort((a, b) => b.played - a.played).map((lineup, index) => (
-            <span
-              key={index}
-              className={`pos-${index+1}`}
-            >
-              {index === 0 && <GiPodiumWinner />}
-              {index === 1 && <GiPodiumSecond />}
-              {index === 2 && <GiPodiumThird />}
-              <strong>{lineup.formation}</strong> ({lineup.played} jogos)
-            </span>
-          ))
+              <span
+                key={index}
+                className={`pos-${index + 1}`}
+              >
+                {index === 0 && <GiPodiumWinner />}
+                {index === 1 && <GiPodiumSecond />}
+                {index === 2 && <GiPodiumThird />}
+                <strong>{lineup.formation}</strong> ({lineup.played} jogos)
+              </span>
+            ))
         }
       </Lineups>
       <Players>
         <Title>Jogadores</Title>
-        <TableOfPlayers data-testid="table-players">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Nome</th>
-              <th>Idade</th>
-              <th>Nacionalidade</th>
-            </tr>
-          </thead>
-          <tbody>
-            {players.map(({ player }, index) => (
-              <tr key={index}>
-                <td>
-                  <div className="avatar" title={player.name ? player.name : "-"}>
-                    {player.photo ?
-                      <Image
-                        src={player.photo}
-                        alt={player.name ? player.name : "-"}
-                        width={40}
-                        height={40}
-                      /> :
-                      <FiUserX size={40} color={theme.colors.gray[500]} />
-                    }
-                  </div>
-                </td>
-                <td>{player.name ? player.name : "-"}</td>
-                <td>{player.age ? player.age : "-"}</td>
-                <td>{player.nationality ? player.nationality : "-"}</td>
+        <TableContainer>
+          <TableOfPlayers data-testid="table-players">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Nacionalidade</th>
               </tr>
-            ))}
-          </tbody>
-        </TableOfPlayers>
+            </thead>
+            <tbody>
+              {players.map(({ player }, index) => (
+                <tr key={index}>
+                  <td>
+                    <div className="avatar" title={player.name ? player.name : "-"}>
+                      {player.photo ?
+                        <Image
+                          src={player.photo}
+                          alt={player.name ? player.name : "-"}
+                          width={40}
+                          height={40}
+                        /> :
+                        <FiUserX size={40} color={theme.colors.gray[500]} />
+                      }
+                    </div>
+                  </td>
+                  <td>{player.name ? player.name : "-"}</td>
+                  <td>{player.age ? player.age : "-"}</td>
+                  <td>{player.nationality ? player.nationality : "-"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </TableOfPlayers>
+        </TableContainer>
+
       </Players>
     </Container>
   );

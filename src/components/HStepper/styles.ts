@@ -30,6 +30,11 @@ export const SelectorContainer = styled.div<HTMLAttributes<HTMLDivElement>>`
   align-items: flex-start;
   min-height: 30rem;
   gap: 1rem;
+
+  @media(max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 100%;
+    padding: 2rem;
+  };
 `;
 
 export const Buttons = styled.div<HTMLAttributes<HTMLDivElement>>`
