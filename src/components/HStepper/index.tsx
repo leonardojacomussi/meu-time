@@ -6,13 +6,13 @@ import defaultData from "@/mock/data";
 import { useSnackbar } from "notistack";
 import countries from "@/mock/countries";
 import TeamSelector from "../TeamSelector";
-import LoadingContent from "../LoadingContent";
 import LeagueSelector from "../LeagueSelector";
 import SeasonSelector from "../SeasonSelector";
 import TeamStatistics from "../TeamStatistics";
 import CountrySelector from "../CountrySelector";
+import useLoadingContent from "@/hooks/useLoadingContent";
 import { Container, SelectorContainer, Content, Buttons } from "./styles";
-import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useEffect, useState } from "react";
+import { FC, Fragment, HTMLAttributes, SetStateAction, SyntheticEvent, useState } from "react";
 import { DataType, CountryType, LeagueType, SeasonType, TeamType, LeagueResponse, StatisticsType, PlayerType } from "@/interfaces";
 
 const steps = ["País", "Liga", "Temporada", "Clube", "Informações"];
@@ -24,8 +24,8 @@ interface HStepperProps extends HTMLAttributes<HTMLDivElement> {
 };
 
 const HStepper: FC<HStepperProps> = ({ data, setData, apiKey, ...props }) => {
+  const { loadingContent, changeLoadingContent } = useLoadingContent();
   const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState<boolean>(false);
   const [activeStep, setActiveStep] = useState<number>(0);
   const [leagues, setLeagues] = useState<Array<LeagueResponse>>([]);
   const [teams, setTeams] = useState<Array<TeamType>>([]);
@@ -53,7 +53,7 @@ const HStepper: FC<HStepperProps> = ({ data, setData, apiKey, ...props }) => {
 
   const handleNext = async (): Promise<void> => {
     if (activeStep === steps.length - 1) return;
-    setLoading(true);
+    changeLoadingContent(true);
     if (activeStep === 0) {
       const success = await fetchLeague();
       if (!success) return;
@@ -69,7 +69,7 @@ const HStepper: FC<HStepperProps> = ({ data, setData, apiKey, ...props }) => {
       if (!success) return;
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
-    setLoading(false);
+    changeLoadingContent(false);
   };
 
   const fetchLeague = async (): Promise<boolean> => {
@@ -277,7 +277,6 @@ const HStepper: FC<HStepperProps> = ({ data, setData, apiKey, ...props }) => {
           </Buttons>
         </Fragment>
       )}
-      <LoadingContent open={loading} />
     </Container>
   );
 }

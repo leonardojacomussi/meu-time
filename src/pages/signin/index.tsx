@@ -5,17 +5,19 @@ import Cookies from "js-cookie";
 import { FiKey } from "react-icons/fi";
 import { useSnackbar } from "notistack";
 import Input from "../../components/Input";
-import { FormEvent, useEffect, useState } from "react";
 import { ParsedUrlQuery } from "querystring";
 import Button from "../../components/Button";
 import { useRouter, NextRouter } from "next/router";
+import { FormEvent, useEffect, useState } from "react";
 import { Container, Form, Background } from "./styles";
+import useLoadingContent from "@/hooks/useLoadingContent";
 
 const SignIn: NextPage = (): JSX.Element => {
   const router: NextRouter = useRouter();
   const query: ParsedUrlQuery = router.query;
   const { enqueueSnackbar } = useSnackbar();
   const [apiKey, setApiKey] = useState<string>("");
+  const { loadingContent, changeLoadingContent } = useLoadingContent();
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
@@ -23,6 +25,7 @@ const SignIn: NextPage = (): JSX.Element => {
       enqueueSnackbar("Informe a API key", { variant: "error" });
       return;
     };
+    changeLoadingContent(true);
     api.defaults.headers["X-RapidAPI-Key"] = apiKey;
     api.get("countries").then((response) => {
       if(response.status >= 200 && response.status < 300) {
@@ -31,6 +34,8 @@ const SignIn: NextPage = (): JSX.Element => {
       };
     }).catch((error) => {
       enqueueSnackbar("API key inválida", { variant: "error" });
+    }).finally(() => {
+      changeLoadingContent(false);
     });
   };
 

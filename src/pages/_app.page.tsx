@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import Head from "next/head";
 import theme from "@/styles/theme";
 import muiTheme from "@/styles/muiTheme";
@@ -7,12 +7,12 @@ import GlobalStyle from "@/styles/Global";
 import { SnackbarProvider } from "notistack";
 import { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { GiSoccerBall } from "react-icons/gi";
 import { useRouter, NextRouter } from "next/router";
-import LoadingContent from "@/components/LoadingContent";
 import createEmotionCache from "../utils/createEmotionCache";
 import { ThemeProvider as SCThemeProvider } from "styled-components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { LoadingContentProvider } from "@/contexts/LoadingContentContext";
+import useLoadingContent from "@/hooks/useLoadingContent";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache: EmotionCache = createEmotionCache();
@@ -23,28 +23,28 @@ interface MyAppProps extends AppProps {
 
 const App: FC<MyAppProps> = ({
   Component, pageProps, emotionCache = clientSideEmotionCache
- }): JSX.Element => {
+}): JSX.Element => {
   const router: NextRouter = useRouter();
-	const [openLoadingContent, setOpenLoadingContent] = useState<boolean>(false);
+  const { loadingContent, changeLoadingContent } = useLoadingContent();
 
   useEffect(() => {
-		const handleStart = () => {
-			setOpenLoadingContent(true);
-		};
-		const handleStop = () => {
-			setOpenLoadingContent(false);
-		};
+    const handleStart = () => {
+      changeLoadingContent(true);
+    };
+    const handleStop = () => {
+      changeLoadingContent(false);
+    };
 
-		router.events.on("routeChangeStart", handleStart);
-		router.events.on("routeChangeComplete", handleStop);
-		router.events.on("routeChangeError", handleStop);
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
 
-		return () => {
-			router.events.off("routeChangeStart", handleStart);
-			router.events.off("routeChangeComplete", handleStop);
-			router.events.off("routeChangeError", handleStop);
-		};
-	}, [router]);
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -66,9 +66,10 @@ const App: FC<MyAppProps> = ({
       <MuiThemeProvider theme={muiTheme}>
         <SCThemeProvider theme={theme}>
           <SnackbarProvider maxSnack={5} style={{ fontSize: "1.6rem" }}>
-            <GlobalStyle />
-            <Component {...pageProps} />
-            <LoadingContent open={openLoadingContent} />
+            <LoadingContentProvider>
+              <GlobalStyle />
+              <Component {...pageProps} />
+            </LoadingContentProvider>
           </SnackbarProvider>
         </SCThemeProvider>
       </MuiThemeProvider>

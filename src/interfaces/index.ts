@@ -1,3 +1,8 @@
+export interface LoadingContentContextType  {
+  loadingContent: boolean,
+  changeLoadingContent: (newStatus: boolean) => void,
+};
+
 export interface CountryType {
   code: string;
   flag: string;

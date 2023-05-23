@@ -1,11 +1,11 @@
-import { NextPage, GetServerSidePropsContext } from "next";
-import { useState } from "react";
 import Image from "next/image";
+import { useState } from "react";
+import defaultData from "@/mock/data";
+import { DataType } from "@/interfaces";
+import HStepper from "@/components/HStepper";
 import soccerImg from "../../../public/assets/soccer.svg";
 import { Container, Header, Content } from "./styles";
-import HStepper from "@/components/HStepper";
-import { DataType } from "@/interfaces";
-import defaultData from "@/mock/data";
+import { NextPage, GetServerSidePropsContext } from "next";
 
 const Home: NextPage<{ apiKey: string }> = ({ apiKey }): JSX.Element => {
   const [data, setData] = useState<DataType>({...defaultData});
