@@ -17,7 +17,7 @@ const SignIn: NextPage = (): JSX.Element => {
   const query: ParsedUrlQuery = router.query;
   const { enqueueSnackbar } = useSnackbar();
   const [apiKey, setApiKey] = useState<string>("");
-  const { loadingContent, changeLoadingContent } = useLoadingContent();
+  const { changeLoadingContent } = useLoadingContent();
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
@@ -25,18 +25,25 @@ const SignIn: NextPage = (): JSX.Element => {
       enqueueSnackbar("Informe a API key", { variant: "error" });
       return;
     };
+
     changeLoadingContent(true);
-    api.defaults.headers["X-RapidAPI-Key"] = apiKey;
-    api.get("countries").then((response) => {
+    try {
+      const response = await api.get("countries", {
+        headers: {
+          "x-rapidapi-key": apiKey,
+        },
+      });
       if(response.status >= 200 && response.status < 300) {
         Cookies.set("meu-time-api-key", apiKey);
-        router.push("/home");
+        await router.push("/home");
+      } else {
+        enqueueSnackbar("API key inválida", { variant: "error" });
       };
-    }).catch((error) => {
+    } catch (error) {
       enqueueSnackbar("API key inválida", { variant: "error" });
-    }).finally(() => {
+    } finally {
       changeLoadingContent(false);
-    });
+    };
   };
 
   const handleInputChange = (e: FormEvent<HTMLInputElement>): void => {

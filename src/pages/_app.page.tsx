@@ -26,10 +26,10 @@ const App: FC<MyAppProps> = ({
 }): JSX.Element => {
   const router: NextRouter = useRouter();
   const { changeLoadingContent } = useLoadingContent();
-  const handleStart = () => changeLoadingContent(true);
-  const handleStop = () => changeLoadingContent(false);
 
   useEffect(() => {
+    const handleStart = () => changeLoadingContent(true);
+    const handleStop = () => changeLoadingContent(false);
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleStop);
     router.events.on("routeChangeError", handleStop);
