@@ -13,7 +13,7 @@ interface SeasonSelectorProps extends HTMLAttributes<HTMLDivElement> {
   league: LeagueResponse,
 };
 
-const SeasonSelector: FC<SeasonSelectorProps> = ({ value, onChangeValue, league, ...props }) => {
+const SeasonSelector: FC<SeasonSelectorProps> = ({ value, onChangeValue, league, id, ...props }) => {
   const options: Array<SeasonType> = useMemo(() => {
     const aux: Array<SeasonType> = league.seasons.map((season) => {
       return {
@@ -28,7 +28,7 @@ const SeasonSelector: FC<SeasonSelectorProps> = ({ value, onChangeValue, league,
   return (
     <Container data-testid="container" {...props}>
       <Autocomplete
-        id="season-select"
+        id={id ? id : "season-select"}
         sx={{ width: 300 }}
         options={options}
         getOptionDisabled={(option: SeasonType) => option.year === "Selecione uma temporada"}

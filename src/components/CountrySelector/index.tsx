@@ -13,7 +13,7 @@ interface CountrySelectorProps extends HTMLAttributes<HTMLDivElement> {
   onChangeValue: (event: SyntheticEvent<Element, Event>, value: CountryType) => void
 };
 
-const CountrySelector: FC<CountrySelectorProps> = ({ value, onChangeValue, ...props }) => {
+const CountrySelector: FC<CountrySelectorProps> = ({ value, onChangeValue, id, ...props }) => {
   return (
     <Container data-testid="container" {...props}>
       <Flag>
@@ -30,7 +30,7 @@ const CountrySelector: FC<CountrySelectorProps> = ({ value, onChangeValue, ...pr
         }
       </Flag>
       <Autocomplete
-        id="country-select"
+        id={id ? id : "country-select"}
         sx={{ width: 300 }}
         options={countries}
         getOptionDisabled={(option) => option.name === "Selecione um país"}

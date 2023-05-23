@@ -15,7 +15,7 @@ interface LeagueSelectorProps extends HTMLAttributes<HTMLDivElement> {
   leagues: LeagueResponse[],
 };
 
-const LeagueSelector: FC<LeagueSelectorProps> = ({ value, onChangeValue, leagues, ...props }) => {
+const LeagueSelector: FC<LeagueSelectorProps> = ({ value, onChangeValue, leagues, id, ...props }) => {
   const options: Array<LeagueType> = useMemo(() => {
     const aux: Array<LeagueType> = leagues.map(({ league }) => {
       return {
@@ -44,7 +44,7 @@ const LeagueSelector: FC<LeagueSelectorProps> = ({ value, onChangeValue, leagues
         }
       </Logo>
       <Autocomplete
-        id="league-select"
+        id={id ? id : "league-select"}
         sx={{ width: 300 }}
         options={options}
         getOptionDisabled={(option) => option.name === "Selecione uma liga"}

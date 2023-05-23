@@ -14,7 +14,7 @@ interface TeamSelectorProps extends HTMLAttributes<HTMLDivElement> {
   teams: TeamType[],
 };
 
-const TeamSelector: FC<TeamSelectorProps> = ({ value, onChangeValue, teams, ...props }) => {
+const TeamSelector: FC<TeamSelectorProps> = ({ value, onChangeValue, teams, id, ...props }) => {
   const options = useMemo(() => {
     const aux: TeamType[] = [...teams];
     aux.unshift({
@@ -56,7 +56,7 @@ const TeamSelector: FC<TeamSelectorProps> = ({ value, onChangeValue, teams, ...p
         }
       </Logo>
       <Autocomplete
-        id="team-select"
+        id={id ? id : "team-select"}
         sx={{ width: 300 }}
         options={options}
         getOptionDisabled={(option: TeamType) => option.team.name === "Selecione um clube"}
