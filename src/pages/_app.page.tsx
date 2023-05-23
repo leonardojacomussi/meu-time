@@ -25,16 +25,11 @@ const App: FC<MyAppProps> = ({
   Component, pageProps, emotionCache = clientSideEmotionCache
 }): JSX.Element => {
   const router: NextRouter = useRouter();
-  const { loadingContent, changeLoadingContent } = useLoadingContent();
+  const { changeLoadingContent } = useLoadingContent();
+  const handleStart = () => changeLoadingContent(true);
+  const handleStop = () => changeLoadingContent(false);
 
   useEffect(() => {
-    const handleStart = () => {
-      changeLoadingContent(true);
-    };
-    const handleStop = () => {
-      changeLoadingContent(false);
-    };
-
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleStop);
     router.events.on("routeChangeError", handleStop);
@@ -62,6 +57,13 @@ const App: FC<MyAppProps> = ({
         <meta name="msapplication-navbutton-color" content={theme.colors.gray[400]} />
         {/* <!-- iOS Safari --> */}
         <meta name="apple-mobile-web-app-status-bar-style" content={theme.colors.gray[400]} />
+        {/* [INIT] Open Graph Protocol */}
+        <meta property="og:url" content="https://meu-time-leonardojacomussi.vercel.app/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Meu time" />
+        <meta property="og:description" content="Meu time - o aplicativo do torcedor fanático!" />
+        <meta property="og:image" content="https://raw.githubusercontent.com/leonardojacomussi/meu-time/main/.github/preview_signin.png" />
+        {/* [END] Open Graph Protocol */}
       </Head>
       <MuiThemeProvider theme={muiTheme}>
         <SCThemeProvider theme={theme}>
